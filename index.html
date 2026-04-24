@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>hey... forgive me? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe4ec 0%, #ffc0d4 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', 'Helvetica', sans-serif;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* floating tiny hearts - calmer */
+        .floating-heart {
+            position: absolute;
+            font-size: 18px;
+            opacity: 0.3;
+            pointer-events: none;
+            user-select: none;
+            animation: floatSoft 7s infinite ease-in-out;
+        }
+
+        @keyframes floatSoft {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateY(-20px) rotate(6deg); opacity: 0.4; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+        }
+
+        /* main card */
+        .card {
+            background: rgba(255, 248, 250, 0.96);
+            backdrop-filter: blur(2px);
+            max-width: 420px;
+            width: 100%;
+            border-radius: 52px;
+            padding: 32px 22px 42px;
+            box-shadow: 0 18px 32px rgba(255, 80, 120, 0.2);
+            text-align: center;
+            border: 1px solid #ffd9e5;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #db5a7a;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #c4456b;
+            margin: 12px 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .apology-box {
+            background: #ffeef4;
+            padding: 18px 14px;
+            border-radius: 48px;
+            margin: 18px 0 26px;
+            font-size: 1.05rem;
+            color: #af4d6e;
+            font-weight: 500;
+            line-height: 1.4;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 3px #ffccdd, 0 6px 12px rgba(0,0,0,0.02);
+        }
+
+        .button-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            min-height: 100px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn {
+            border: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: transform 0.08s, box-shadow 0.08s;
+            font-family: inherit;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: 0 5px 0 #b27d91;
+        }
+
+        .btn-yes {
+            background: #ff90ae;
+            color: white;
+            box-shadow: 0 5px 0 #b15474;
+            border: none;
+            position: relative;
+            z-index: 3;
+        }
+
+        .btn-no {
+            background: #f3ccdb;
+            color: #b1385b;
+            box-shadow: 0 5px 0 #b46f88;
+            position: relative;
+            transition: left 0.2s ease, top 0.2s ease;
+            z-index: 2;
+        }
+
+        .btn-yes:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b15474;
+        }
+
+        /* simple emotional message (less intense) */
+        .overlay-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 225, 235, 0.96);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadePop 0.25s ease;
+        }
+
+        .message-card {
+            background: #fffffff2;
+            border-radius: 64px;
+            padding: 32px 24px;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+            border: 1px solid #ffbecf;
+        }
+
+        .message-card h3 {
+            font-size: 1.8rem;
+            color: #e25c82;
+            margin-bottom: 16px;
+        }
+
+        .message-card p {
+            font-size: 1.2rem;
+            color: #a54464;
+            line-height: 1.4;
+            margin: 15px 0;
+        }
+
+        .close-btn {
+            background: #ff98b5;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 18px;
+            cursor: pointer;
+        }
+
+        @keyframes fadePop {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        footer {
+            margin-top: 28px;
+            font-size: 0.7rem;
+            color: #dd8aa5;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 470px) {
+            .btn { padding: 10px 20px; font-size: 1.3rem; min-width: 105px; }
+            .apology-box { font-size: 0.95rem; }
+            .question { font-size: 1.3rem; }
+            .button-container { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- calm floating hearts -->
+<div class="floating-heart" style="top: 8%; left: 7%;">🌸</div>
+<div class="floating-heart" style="bottom: 12%; right: 10%; animation-duration: 8s;">💕</div>
+<div class="floating-heart" style="top: 70%; left: 85%; animation-duration: 6s;">💗</div>
+<div class="floating-heart" style="top: 25%; right: 90%;">🌷</div>
+
+<div class="card" id="mainCard">
+    <h1>✨ oops.. i messed up? ✨</h1>
+    <div class="question">
+        <span>🥺</span> Forgive me? <span>💭</span>
+    </div>
+    <div class="apology-box" id="apologyMessage">
+        I’d really love a second chance...
+    </div>
+    <div class="button-container" id="buttonContainer">
+        <button class="btn btn-yes" id="yesButton">Yes 💖</button>
+        <button class="btn btn-no" id="noButton">No 😔</button>
+    </div>
+    <footer>💬 click no if you’re not ready — it’ll move 💬</footer>
+</div>
+
+<script>
+    // ---------- Less intense apology messages ----------
+    const apologyTexts = [
+        "I'm really sorry... can we fix this? 💫",
+        "You mean a lot to me. Forgive me? 🍀",
+        "I'll make it up to you, promise 🌼",
+        "Let’s just start over? 🤍",
+        "I hate when we argue.. sorry 💧",
+        "One more chance? I’ll be better 🌈",
+        "Please? 🥺 My bad..",
+        "I value you so much. Forgive me? 🌸",
+        "You're awesome and I messed up. sorry ✨",
+        "Smile again? for me? 💗"
+    ];
+
+    let currentMsgIndex = 0;
+    let yesClicked = false;
+    let noClickCount = 0;
+
+    // DOM elements
+    const yesBtn = document.getElementById('yesButton');
+    const noBtn = document.getElementById('noButton');
+    const apologyDiv = document.getElementById('apologyMessage');
+    const container = document.getElementById('buttonContainer');
+
+    // Helper: update apology message (cycle)
+    function updateApologyText() {
+        apologyDiv.innerHTML = apologyTexts[currentMsgIndex % apologyTexts.length];
+        apologyDiv.style.transform = 'scale(1.01)';
+        setTimeout(() => { if(apologyDiv) apologyDiv.style.transform = ''; }, 150);
+        currentMsgIndex = (currentMsgIndex + 1) % apologyTexts.length;
+    }
+
+    // Function to check if two elements overlap (rect collision)
+    function isOverlap(element1, element2) {
+        const rect1 = element1.getBoundingClientRect();
+        const rect2 = element2.getBoundingClientRect();
+        return !(rect1.right < rect2.left || 
+                 rect1.left > rect2.right || 
+                 rect1.bottom < rect2.top || 
+                 rect1.top > rect2.bottom);
+    }
+
+    // Move No button to a random position inside container, but avoid overlapping Yes button
+    function moveNoButtonAvoidYes() {
+        if (yesClicked) return;
+        
+        // get container relative rect
+        const containerRect = container.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
+        
+        // max relative positions (container padding considered)
+        const maxLeft = container.clientWidth - noBtn.offsetWidth - 8;
+        const maxTop = container.clientHeight - noBtn.offsetHeight - 8;
+        if (maxLeft <= 0 || maxTop <= 0) return;
+        
+        let attempts = 0;
+        let newLeft, newTop;
+        let overlap = true;
+        
+        // try up to 25 times to find a spot that doesn't overlap Yes button
+        while (overlap && attempts < 25) {
+            newLeft = Math.random() * maxLeft;
+            newTop = Math.random() * maxTop;
+            // clamp within safe borders
+            newLeft = Math.min(Math.max(newLeft, 4), maxLeft);
+            newTop = Math.min(Math.max(newTop, 4), maxTop);
+            
+            // apply temporary position to check overlap
+            const originalPosition = noBtn.style.position;
+            const originalLeft = noBtn.style.left;
+            const originalTop = noBtn.style.top;
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = newLeft + 'px';
+            noBtn.style.top = newTop + 'px';
+            // force reflow to compute positions
+            noBtn.getBoundingClientRect();
+            
+            if (!isOverlap(noBtn, yesBtn)) {
+                overlap = false;
+            } else {
+                // revert temporary but we will reassign later
+                noBtn.style.left = originalLeft;
+                noBtn.style.top = originalTop;
+            }
+            attempts++;
+        }
+        
+        // apply final position (or fallback)
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = newLeft + 'px';
+        noBtn.style.top = newTop + 'px';
+        noBtn.style.margin = '0';
+        // little shake for fun
+        noBtn.style.transform = 'rotate(1deg)';
+        setTimeout(() => { if(noBtn) noBtn.style.transform = ''; }, 120);
+    }
+
+    // reset no button position if needed (but not required initially)
+    function resetNoPosition() {
+        if (yesClicked) return;
+        noBtn.style.position = '';
+        noBtn.style.left = '';
+        noBtn.style.top = '';
+        noBtn.style.margin = '';
+    }
+
+    // when clicking "No"
+    function onNoClick(e) {
+        if (yesClicked) return;
+        e.stopPropagation();
+        noClickCount++;
+        updateApologyText();   // change apology message
+        
+        // additional effect: subtle heart break icon at click pos
+        if (e.clientX && e.clientY) {
+            let heartBreak = document.createElement('div');
+            heartBreak.innerText = '💔';
+            heartBreak.style.position = 'fixed';
+            heartBreak.style.left = (e.clientX - 12) + 'px';
+            heartBreak.style.top = (e.clientY - 12) + 'px';
+            heartBreak.style.fontSize = '26px';
+            heartBreak.style.pointerEvents = 'none';
+            heartBreak.style.opacity = '0.7';
+            heartBreak.style.transition = 'all 0.4s';
+            document.body.appendChild(heartBreak);
+            setTimeout(() => {
+                heartBreak.style.opacity = '0';
+                heartBreak.style.transform = 'translateY(-25px)';
+                setTimeout(() => heartBreak.remove(), 400);
+            }, 20);
+        }
+        
+        // Move button but avoid overlapping YES
+        moveNoButtonAvoidYes();
+        
+        // If 'No' pressed many times, display a special soft plea but not over the top
+        if (noClickCount === 4) {
+            apologyDiv.innerHTML = "🥺 I'll wait... but forgive me? 💕";
+            setTimeout(() => {
+                if (!yesClicked && apologyDiv.innerHTML.includes("wait")) {
+                    apologyDiv.innerHTML = apologyTexts[currentMsgIndex % apologyTexts.length];
+                }
+            }, 1800);
+        }
+        if (noClickCount >= 7) {
+            apologyDiv.innerHTML = "💗 okay I'll keep asking... please? 💗";
+        }
+    }
+    
+    // Yes click: gentle emotional message (less intense)
+    function onYesClick() {
+        if (yesClicked) return;
+        yesClicked = true;
+        
+        // disable both buttons to avoid double action
+        yesBtn.disabled = true;
+        noBtn.disabled = true;
+        
+        // create overlay with a simple sweet message (not too romantic)
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay-message';
+        overlay.innerHTML = `
+            <div class="message-card">
+                <h3>💖 Thank you 💖</h3>
+                <p>😊 You just made my day. <br>
+                I really appreciate you. <br><br>
+                Let’s move forward and keep things sweet. <br>
+                🌸 You're the best! 🌸
+                </p>
+                <button class="close-btn" id="closeOverlayBtn">🤍 Okay 🤍</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        // simple mini heart rain effect (subtle)
+        for (let i = 0; i < 35; i++) {
+            const heart = document.createElement('div');
+            heart.innerText = ['💖', '🌸', '💕', '✨', '💗'][Math.floor(Math.random() * 5)];
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = '-20px';
+            heart.style.fontSize = (12 + Math.random() * 20) + 'px';
+            heart.style.opacity = '0.6';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '1001';
+            heart.style.transition = 'transform 0.1s';
+            heart.style.animation = `fallSoft ${1.2 + Math.random() * 1.5}s linear forwards`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2000);
+        }
+        
+        // add keyframes for falling if not exists
+        if (!document.querySelector('#fallKeyframeStyle')) {
+            const style = document.createElement('style');
+            style.id = 'fallKeyframeStyle';
+            style.innerText = `
+                @keyframes fallSoft {
+                    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+                    100% { transform: translateY(100vh) rotate(12deg); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // close overlay action
+        const closeBtn = overlay.querySelector('#closeOverlayBtn');
+        closeBtn.addEventListener('click', () => {
+            overlay.remove();
+            // also freeze no button if someone tries (already disabled)
+            noBtn.style.pointerEvents = 'none';
+            yesBtn.style.pointerEvents = 'none';
+            // optional: final message in box
+            apologyDiv.innerHTML = "💕 we're good! thanks for forgiving me 💕";
+        });
+    }
+    
+    // Ensure on window resize, the No button does not overlap YES.
+    function repositionOnResize() {
+        if (yesClicked) return;
+        if (noBtn.style.position === 'absolute') {
+            const containerRect = container.getBoundingClientRect();
+            const yesRect = yesBtn.getBoundingClientRect();
+            let leftVal = parseFloat(noBtn.style.left);
+            let topVal = parseFloat(noBtn.style.top);
+            if (isNaN(leftVal)) leftVal = 0;
+            if (isNaN(topVal)) topVal = 0;
+            // clamp within container bounds
+            const maxLeft = container.clientWidth - noBtn.offsetWidth - 8;
+            const maxTop = container.clientHeight - noBtn.offsetHeight - 8;
+            let newLeft = Math.min(Math.max(leftVal, 4), maxLeft);
+            let newTop = Math.min(Math.max(topVal, 4), maxTop);
+            noBtn.style.left = newLeft + 'px';
+            noBtn.style.top = newTop + 'px';
+            // if after clamping still overlap with yes? then move slightly again.
+            if (isOverlap(noBtn, yesBtn)) {
+                // shift horizontally a bit
+                let shiftX = 30;
+                let newLeft2 = newLeft + shiftX;
+                if (newLeft2 + noBtn.offsetWidth > container.clientWidth - 5) newLeft2 = newLeft - shiftX;
+                newLeft2 = Math.min(Math.max(newLeft2, 4), maxLeft);
+                noBtn.style.left = newLeft2 + 'px';
+                // final check
+                if (isOverlap(noBtn, yesBtn)) {
+                    // as a last resort: move more randomly but still safe
+                    const fallbackLeft = Math.random() * maxLeft;
+                    noBtn.style.left = Math.min(Math.max(fallbackLeft, 4), maxLeft) + 'px';
+                }
+            }
+        } else {
+            // if not absolute but we want to ensure default no overlap, just reset if needed
+            if (isOverlap(noBtn, yesBtn) && !yesClicked) {
+                // small nudge: set absolute prevent collision temporary
+                const maxLeft = container.clientWidth - noBtn.offsetWidth - 8;
+                const maxTop = container.clientHeight - noBtn.offsetHeight - 8;
+                if (maxLeft > 10) {
+                    noBtn.style.position = 'absolute';
+                    noBtn.style.left = '15px';
+                    noBtn.style.top = '5px';
+                    if (isOverlap(noBtn, yesBtn)) {
+                        noBtn.style.left = (maxLeft - 25) + 'px';
+                    }
+                }
+            }
+        }
+    }
+    
+    // Initialize button container relative positioning
+    function init() {
+        container.style.position = 'relative';
+        container.style.display = 'flex';
+        container.style.flexWrap = 'wrap';
+        container.style.justifyContent = 'center';
+        container.style.alignItems = 'center';
+        container.style.gap = '30px';
+        
+        // random first apology - less dramatic
+        currentMsgIndex = Math.floor(Math.random() * apologyTexts.length);
+        apologyDiv.innerHTML = apologyTexts[currentMsgIndex];
+        currentMsgIndex = (currentMsgIndex + 1) % apologyTexts.length;
+        
+        // events
+        noBtn.addEventListener('click', onNoClick);
+        yesBtn.addEventListener('click', onYesClick);
+        
+        // Make sure initial positions: no overlap at start
+        setTimeout(() => {
+            if (isOverlap(noBtn, yesBtn) && !yesClicked) {
+                // slightly shift no button
+                noBtn.style.position = 'relative';
+                noBtn.style.marginLeft = '8px';
+                if (isOverlap(noBtn, yesBtn)) {
+                    noBtn.style.marginLeft = '25px';
+                }
+            }
+        }, 50);
+        
+        // On window resize, handle reposition to avoid overlap
+        window.addEventListener('resize', () => {
+            if (!yesClicked) {
+                repositionOnResize();
+            }
+        });
+        
+        // optional orientation change
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                if (!yesClicked) repositionOnResize();
+            }, 30);
+        });
+    }
+    
+    init();
+    
+    // Also watch for dynamic movement after no is absolute, ensure it doesn't go out of bounds
+    setInterval(() => {
+        if (!yesClicked && noBtn.style.position === 'absolute') {
+            const maxLeft = container.clientWidth - noBtn.offsetWidth - 8;
+            const maxTop = container.clientHeight - noBtn.offsetHeight - 8;
+            let left = parseFloat(noBtn.style.left);
+            let top = parseFloat(noBtn.style.top);
+            if (isNaN(left)) left = 0;
+            if (isNaN(top)) top = 0;
+            if (left > maxLeft && maxLeft > 0) noBtn.style.left = maxLeft + 'px';
+            if (top > maxTop && maxTop > 0) noBtn.style.top = maxTop + 'px';
+            if (left < 4) noBtn.style.left = '4px';
+            if (top < 4) noBtn.style.top = '4px';
+            // also avoid overlapping yes button periodically
+            if (isOverlap(noBtn, yesBtn)) {
+                // quick fix: move slightly right/left
+                let newL = left + 35;
+                if (newL + noBtn.offsetWidth > container.clientWidth - 8) newL = left - 35;
+                newL = Math.min(Math.max(newL, 4), maxLeft);
+                noBtn.style.left = newL + 'px';
+            }
+        }
+    }, 300);
+    
+    // small touch for iphone : prevent zoom double tap (just style, already meta)
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('touchstart', (e) => {
+            // ensure quick response
+        });
+    });
+</script>
+</body>
+</html>
